@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guía .NET / C# — EjerciciosProgramacion</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222636;
+      --border: #2e3250;
+      --accent: #a78bfa;
+      --accent2: #5b8cff;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --orange: #fb923c;
+      --teal: #2dd4bf;
+      --text: #e2e8f0;
+      --text-muted: #8892a4;
+      --code-bg: #0d1117;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+    header p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Índice */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .toc ol { padding-left: 1.2rem; }
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--accent2); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Secciones */
+    .concept {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      scroll-margin-top: 1rem;
+    }
+    .concept-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .concept-num {
+      background: rgba(167,139,250,0.15);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .concept h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .concept p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.93rem;
+    }
+    .concept p:last-child { margin-bottom: 0; }
+    .concept strong { color: var(--text); }
+
+    /* Código */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.83rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 0.8rem 0;
+    }
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      color: var(--green);
+      padding: 0.15em 0.45em;
+      border-radius: 4px;
+    }
+
+    /* Colores de sintaxis manual */
+    .kw  { color: #569cd6; }   /* keywords: public, class, void... */
+    .tp  { color: #4ec9b0; }   /* types: int, string, bool... */
+    .cm  { color: #6a9955; }   /* comments */
+    .st  { color: #ce9178; }   /* strings */
+    .nm  { color: #b5cea8; }   /* numbers */
+    .fn  { color: #dcdcaa; }   /* functions */
+    .tx  { color: #e2e8f0; }   /* normal text */
+
+    /* Tabla de modificadores */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.88rem;
+    }
+    thead tr { background: var(--surface2); }
+    th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    td:first-child code { color: var(--accent); }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .badge-default { background: rgba(91,140,255,0.15); color: var(--accent2); }
+    .badge-note    { background: rgba(251,191,36,0.15);  color: var(--yellow); }
+    .badge-tip     { background: rgba(52,211,153,0.15);  color: var(--green); }
+
+    .note-box {
+      background: rgba(251,191,36,0.07);
+      border: 1px solid rgba(251,191,36,0.25);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      font-size: 0.87rem;
+      color: var(--yellow);
+      margin-top: 0.8rem;
+    }
+    .tip-box {
+      background: rgba(52,211,153,0.07);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      font-size: 0.87rem;
+      color: var(--green);
+      margin-top: 0.8rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Guía .NET / C#</h1>
+    <p>Conceptos del lenguaje vistos durante el proyecto <strong>EjerciciosProgramacion</strong> · Actualizada progresivamente</p>
+  </header>
+
+  <!-- ÍNDICE -->
+  <div class="toc">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#modificadores-acceso">Modificadores de acceso</a></li>
+      <li><a href="#tipos-datos">Tipos de datos primitivos</a></li>
+      <li><a href="#variables-constantes">Variables y constantes</a></li>
+      <li><a href="#comentarios">Comentarios</a></li>
+      <li><a href="#interfaces">Interfaces</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. MODIFICADORES DE ACCESO -->
+  <div class="concept" id="modificadores-acceso">
+    <div class="concept-header">
+      <span class="concept-num">01</span>
+      <h2>Modificadores de acceso</h2>
+    </div>
+    <p>Determinan desde dónde es accesible una clase, método o propiedad. Controlan la visibilidad de los elementos del código.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Modificador</th>
+          <th>Accesible desde...</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>public</code></td>
+          <td>Cualquier parte del código, dentro y fuera del proyecto.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>internal</code></td>
+          <td>Solo dentro del mismo proyecto (ensamblado). <strong>Valor por defecto</strong> en clases generadas por Visual Studio.</td>
+          <td><span class="badge badge-default">default</span></td>
+        </tr>
+        <tr>
+          <td><code>private</code></td>
+          <td>Solo dentro de la propia clase. En clases de nivel superior no tiene sentido; se usa en clases anidadas.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>protected</code></td>
+          <td>Dentro de la clase y sus clases derivadas (herencia). Solo aplica a clases anidadas.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>protected internal</code></td>
+          <td>Combinación: accesible desde el mismo ensamblado O desde clases derivadas en otros ensamblados.</td>
+          <td><span class="badge badge-note">avanzado</span></td>
+        </tr>
+        <tr>
+          <td><code>private protected</code></td>
+          <td>Combinación restrictiva: solo desde clases derivadas dentro del mismo ensamblado.</td>
+          <td><span class="badge badge-note">avanzado</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pre><span class="kw">public</span> <span class="kw">class</span> <span class="tp">MiClase</span>           <span class="cm">// Accesible desde cualquier sitio</span>
+<span class="kw">internal</span> <span class="kw">class</span> <span class="tp">MiClase</span>        <span class="cm">// Solo dentro del proyecto</span>
+<span class="kw">private</span> <span class="kw">class</span> <span class="tp">MiClaseAnidada</span>  <span class="cm">// Solo dentro de la clase contenedora</span></pre>
+
+    <div class="tip-box">
+      💡 <strong>Regla práctica en este proyecto:</strong> las clases de ejercicios van en <code>public</code> porque <code>Program.cs</code> las instancia desde fuera de su namespace.
+    </div>
+  </div>
+
+  <!-- 2. TIPOS DE DATOS -->
+  <div class="concept" id="tipos-datos">
+    <div class="concept-header">
+      <span class="concept-num">02</span>
+      <h2>Tipos de datos primitivos</h2>
+    </div>
+    <p>Los tipos primitivos son los bloques básicos de datos del lenguaje. En C# todos son alias de tipos del sistema .NET.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo C#</th>
+          <th>Tipo .NET</th>
+          <th>Descripción</th>
+          <th>Ejemplo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>int</code></td>
+          <td><code>Int32</code></td>
+          <td>Entero de 32 bits. Rango: −2.147M a 2.147M</td>
+          <td><code>int x = 42;</code></td>
+        </tr>
+        <tr>
+          <td><code>long</code></td>
+          <td><code>Int64</code></td>
+          <td>Entero de 64 bits. Para valores muy grandes.</td>
+          <td><code>long x = 9999999999L;</code></td>
+        </tr>
+        <tr>
+          <td><code>double</code></td>
+          <td><code>Double</code></td>
+          <td>Número decimal de doble precisión.</td>
+          <td><code>double x = 3.14;</code></td>
+        </tr>
+        <tr>
+          <td><code>float</code></td>
+          <td><code>Single</code></td>
+          <td>Decimal de simple precisión. Menos exacto que double.</td>
+          <td><code>float x = 3.14f;</code></td>
+        </tr>
+        <tr>
+          <td><code>decimal</code></td>
+          <td><code>Decimal</code></td>
+          <td>Alta precisión decimal. Usado en cálculos financieros.</td>
+          <td><code>decimal x = 9.99m;</code></td>
+        </tr>
+        <tr>
+          <td><code>bool</code></td>
+          <td><code>Boolean</code></td>
+          <td>Verdadero o falso.</td>
+          <td><code>bool x = true;</code></td>
+        </tr>
+        <tr>
+          <td><code>char</code></td>
+          <td><code>Char</code></td>
+          <td>Un único carácter Unicode. Se define con comillas simples.</td>
+          <td><code>char x = 'A';</code></td>
+        </tr>
+        <tr>
+          <td><code>string</code></td>
+          <td><code>String</code></td>
+          <td>Cadena de texto. Aunque no es estrictamente primitivo, se trata como tal en C#.</td>
+          <td><code>string x = "Hola";</code></td>
+        </tr>
+        <tr>
+          <td><code>object</code></td>
+          <td><code>Object</code></td>
+          <td>Tipo base del que derivan todos los tipos en .NET.</td>
+          <td><code>object x = 42;</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pre><span class="tp">int</span>     entero   = <span class="nm">42</span>;
+<span class="tp">double</span>  decimal_ = <span class="nm">3.14</span>;
+<span class="tp">bool</span>    activo   = <span class="kw">true</span>;
+<span class="tp">char</span>    letra    = <span class="st">'A'</span>;
+<span class="tp">string</span>  nombre   = <span class="st">"C#"</span>;</pre>
+  </div>
+
+  <!-- 3. VARIABLES Y CONSTANTES -->
+  <div class="concept" id="variables-constantes">
+    <div class="concept-header">
+      <span class="concept-num">03</span>
+      <h2>Variables y constantes</h2>
+    </div>
+    <p>Una <strong>variable</strong> es un espacio en memoria con nombre cuyo valor puede cambiar. Una <strong>constante</strong> se define una vez y no puede modificarse.</p>
+
+    <pre><span class="cm">// Variable — se puede reasignar</span>
+<span class="tp">string</span> lenguaje = <span class="st">"C#"</span>;
+lenguaje = <span class="st">"Python"</span>;   <span class="cm">// válido</span>
+
+<span class="cm">// Constante — valor fijo en tiempo de compilación</span>
+<span class="kw">const</span> <span class="tp">string</span> URL = <span class="st">"https://dotnet.microsoft.com"</span>;
+URL = <span class="st">"otra"</span>;           <span class="cm">// ERROR: no se puede reasignar</span>
+
+<span class="cm">// var — el compilador infiere el tipo automáticamente</span>
+<span class="kw">var</span> numero = <span class="nm">42</span>;         <span class="cm">// el compilador lo trata como int</span>
+<span class="kw">var</span> texto  = <span class="st">"Hola"</span>;     <span class="cm">// el compilador lo trata como string</span></pre>
+
+    <div class="note-box">
+      ⚠️ <code>var</code> no es un tipo dinámico — el tipo se determina en compilación y no puede cambiar. Es solo azúcar sintáctico para no repetir el tipo cuando ya es obvio por el valor asignado.
+    </div>
+  </div>
+
+  <!-- 4. COMENTARIOS -->
+  <div class="concept" id="comentarios">
+    <div class="concept-header">
+      <span class="concept-num">04</span>
+      <h2>Comentarios</h2>
+    </div>
+    <p>Los comentarios son ignorados por el compilador. Sirven para documentar el código o desactivar líneas temporalmente.</p>
+
+    <pre><span class="cm">// Comentario de una sola línea</span>
+
+<span class="cm">/*
+ * Comentario de
+ * varias líneas
+ */</span>
+
+<span class="cm">/// &lt;summary&gt;</span>
+<span class="cm">/// Comentario XML de documentación.</span>
+<span class="cm">/// Visual Studio lo muestra como tooltip al usar la clase o método.</span>
+<span class="cm">/// &lt;/summary&gt;</span>
+<span class="kw">public void</span> <span class="fn">MiMetodo</span>() { }</pre>
+
+    <div class="tip-box">
+      💡 Los comentarios <code>///</code> (triple barra) generan documentación automática que Visual Studio muestra como tooltip. Es buena práctica usarlos en interfaces y métodos públicos.
+    </div>
+  </div>
+
+  <!-- 5. INTERFACES -->
+  <div class="concept" id="interfaces">
+    <div class="concept-header">
+      <span class="concept-num">05</span>
+      <h2>Interfaces</h2>
+    </div>
+    <p>Una interfaz es un <strong>contrato</strong>. Define qué debe poder hacer una clase, pero no cómo lo hace. Cualquier clase que implemente la interfaz está obligada a implementar todos sus miembros.</p>
+    <p>En C# una interfaz puede declarar métodos, propiedades, eventos e indexadores — pero no campos ni implementaciones (salvo implementaciones por defecto en C# 8+).</p>
+
+    <pre><span class="cm">// Definición de la interfaz</span>
+<span class="kw">public interface</span> <span class="tp">IEjercicio</span>
+{
+    <span class="tp">string</span> Titulo { <span class="kw">get</span>; }   <span class="cm">// propiedad de solo lectura</span>
+    <span class="kw">void</span> <span class="fn">Run</span>();               <span class="cm">// método sin implementación</span>
+}
+
+<span class="cm">// Clase que implementa la interfaz</span>
+<span class="kw">public class</span> <span class="tp">Ejercicio00</span> : <span class="tp">IEjercicio</span>
+{
+    <span class="kw">public</span> <span class="tp">string</span> Titulo => <span class="st">"#00 - Hola Mundo"</span>;
+
+    <span class="kw">public void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"¡Hola, C#!"</span>);
+    }
+}
+
+<span class="cm">// Uso polimórfico: Program.cs no sabe qué ejercicio es, solo que tiene Run()</span>
+<span class="tp">IEjercicio</span> ejercicio = <span class="kw">new</span> <span class="tp">Ejercicio00</span>();
+ejercicio.<span class="fn">Run</span>();</pre>
+
+    <div class="tip-box">
+      💡 <strong>Convención de nombres:</strong> las interfaces en C# siempre empiezan por <code>I</code> mayúscula. Es una convención tan fuerte que el propio Visual Studio la aplica por defecto al crear una interfaz.
+    </div>
+    <div class="note-box">
+      ⚠️ Una clase puede implementar <strong>múltiples interfaces</strong> a la vez, pero solo puede heredar de <strong>una única clase base</strong>. Esto hace que las interfaces sean la herramienta principal para lograr polimorfismo flexible en C#.
+    </div>
+  </div>
+
+  <footer>
+    Proyecto <strong>EjerciciosProgramacion</strong> · Guía actualizada progresivamente a lo largo del proyecto
+  </footer>
+
+</div>
+</body>
+</html>
