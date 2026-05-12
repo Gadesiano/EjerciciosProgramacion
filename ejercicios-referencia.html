@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ejercicios de Referencia — EjerciciosProgramacion</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222636;
+      --border: #2e3250;
+      --accent: #5b8cff;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --orange: #fb923c;
+      --teal: #2dd4bf;
+      --text: #e2e8f0;
+      --text-muted: #8892a4;
+      --code-bg: #0d1117;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+    header p { color: var(--text-muted); font-size: 0.9rem; }
+    header a { color: var(--accent2); text-decoration: none; }
+    header a:hover { text-decoration: underline; }
+
+    /* Filtros */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+    }
+    .stat span { color: var(--accent); font-weight: 700; }
+
+    /* Grid de ejercicios */
+    .exercises-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .exercise-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      transition: border-color 0.15s;
+      cursor: default;
+    }
+    .exercise-card:hover { border-color: var(--accent); }
+    .exercise-card.done { border-left: 3px solid var(--green); }
+    .exercise-card.hidden { display: none; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+    }
+    .exercise-num {
+      font-family: 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      background: rgba(91,140,255,0.12);
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .difficulty {
+      font-size: 0.72rem;
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .diff-easy   { background: rgba(52,211,153,0.12); color: var(--green); }
+    .diff-medium { background: rgba(251,191,36,0.12);  color: var(--yellow); }
+    .diff-hard   { background: rgba(248,113,113,0.12); color: var(--red); }
+
+    .exercise-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .category-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.5em;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.6rem;
+    }
+
+    .done-toggle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .done-toggle:hover { color: var(--green); }
+    .exercise-card.done .done-toggle { color: var(--green); }
+
+    .gh-link {
+      font-size: 0.78rem;
+      color: var(--accent2);
+      text-decoration: none;
+    }
+    .gh-link:hover { text-decoration: underline; }
+
+    /* Ejercicio expandido (#00) */
+    .exercise-expanded {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .exercise-expanded h2 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+    .exercise-expanded .meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .exercise-expanded pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.82rem;
+      color: var(--green);
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+    .badge-ejemplo {
+      display: inline-block;
+      background: rgba(91,140,255,0.15);
+      color: var(--accent);
+      font-size: 0.72rem;
+      padding: 0.15em 0.6em;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    h3.section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent2); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Ejercicios de Referencia</h1>
+    <p>
+      Basado en el roadmap de <a href="https://retosdeprogramacion.com/roadmap/" target="_blank">MoureDev</a> ·
+      <a href="https://github.com/mouredev/roadmap-retos-programacion" target="_blank">Ver repositorio GitHub</a>
+    </p>
+  </header>
+
+  <!-- Ejercicio de ejemplo expandido -->
+  <div class="badge-ejemplo">📌 Ejemplo de enunciado — #00</div>
+  <div class="exercise-expanded">
+    <h2>#00 — Sintaxis, Variables, Tipos de Datos y Hola Mundo</h2>
+    <div class="meta">Dificultad: Fácil &nbsp;·&nbsp; Categoría: Fundamentos</div>
+    <pre>/*
+ * ¿Preparad@ para aprender o repasar el lenguaje de programación que tú quieras?
+ *
+ * EJERCICIO:
+ * - Crea un comentario en el código y coloca la URL del sitio web oficial del
+ *   lenguaje de programación que has seleccionado.
+ * - Representa las diferentes sintaxis que existen de crear comentarios
+ *   en el lenguaje (en una línea, varias...).
+ * - Crea una variable (y una constante si el lenguaje lo soporta).
+ * - Crea variables representando todos los tipos de datos primitivos
+ *   del lenguaje (cadenas de texto, enteros, booleanos...).
+ * - Imprime por terminal el texto: "¡Hola, [y el nombre de tu lenguaje]!"
+ *
+ * ¿Fácil? No te preocupes, recuerda que esta es una ruta de estudio y
+ * debemos comenzar por el principio.
+ */</pre>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">Total: <span id="total-count">44</span> ejercicios</div>
+    <div class="stat">Completados: <span id="done-count">0</span></div>
+    <div class="stat">Pendientes: <span id="pending-count">44</span></div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterBy('all')">Todos</button>
+    <button class="filter-btn" onclick="filterBy('Fundamentos')">Fundamentos</button>
+    <button class="filter-btn" onclick="filterBy('Estructuras de Datos')">Estructuras de Datos</button>
+    <button class="filter-btn" onclick="filterBy('Strings')">Strings</button>
+    <button class="filter-btn" onclick="filterBy('POO')">POO</button>
+    <button class="filter-btn" onclick="filterBy('Colecciones')">Colecciones</button>
+    <button class="filter-btn" onclick="filterBy('IO')">I/O</button>
+    <button class="filter-btn" onclick="filterBy('Asincronía')">Asincronía</button>
+    <button class="filter-btn" onclick="filterBy('Tests')">Tests</button>
+    <button class="filter-btn" onclick="filterBy('Patrones y SOLID')">Patrones y SOLID</button>
+    <button class="filter-btn" onclick="filterBy('Proyectos')">Proyectos</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="exercises-grid" id="grid"></div>
+
+  <footer>
+    Fuente: <a href="https://retosdeprogramacion.com/roadmap/" target="_blank">retosdeprogramacion.com/roadmap</a> por MoureDev ·
+    Proyecto <strong>EjerciciosProgramacion</strong>
+  </footer>
+
+</div>
+
+<script>
+const BASE_GH = 'https://github.com/mouredev/roadmap-retos-programacion/blob/main/Roadmap/';
+
+const exercises = [
+  { num:'00', title:'Sintaxis, Variables, Tipos de Datos y Hola Mundo',    cat:'Fundamentos',         diff:'easy',   folder:'00%20-%20SINTAXIS%2C%20VARIABLES%2C%20TIPOS%20DE%20DATOS%20Y%20HOLA%20MUNDO' },
+  { num:'01', title:'Operadores y Estructuras de Control',                  cat:'Fundamentos',         diff:'easy',   folder:'01%20-%20OPERADORES%20Y%20ESTRUCTURAS%20DE%20CONTROL' },
+  { num:'02', title:'Funciones y Alcance',                                  cat:'Fundamentos',         diff:'easy',   folder:'02%20-%20FUNCIONES%20Y%20ALCANCE' },
+  { num:'03', title:'Estructuras de Datos',                                 cat:'Estructuras de Datos',diff:'medium', folder:'03%20-%20ESTRUCTURAS%20DE%20DATOS' },
+  { num:'04', title:'Cadenas de Caracteres',                                cat:'Strings',             diff:'easy',   folder:'04%20-%20CADENAS%20DE%20CARACTERES' },
+  { num:'05', title:'Valor y Referencia',                                   cat:'Fundamentos',         diff:'medium', folder:'05%20-%20VALOR%20Y%20REFERENCIA' },
+  { num:'06', title:'Recursividad',                                         cat:'Fundamentos',         diff:'medium', folder:'06%20-%20RECURSIVIDAD' },
+  { num:'07', title:'Pilas y Colas',                                        cat:'Estructuras de Datos',diff:'medium', folder:'07%20-%20PILAS%20Y%20COLAS' },
+  { num:'08', title:'Clases',                                               cat:'POO',                 diff:'easy',   folder:'08%20-%20CLASES' },
+  { num:'09', title:'Herencia y Polimorfismo',                              cat:'POO',                 diff:'medium', folder:'09%20-%20HERENCIA%20Y%20POLIMORFISMO' },
+  { num:'10', title:'Excepciones',                                          cat:'POO',                 diff:'medium', folder:'10%20-%20EXCEPCIONES' },
+  { num:'11', title:'Manejo de Ficheros',                                   cat:'IO',                  diff:'medium', folder:'11%20-%20MANEJO%20DE%20FICHEROS' },
+  { num:'12', title:'JSON y XML',                                           cat:'IO',                  diff:'medium', folder:'12%20-%20JSON%20Y%20XML' },
+  { num:'13', title:'Pruebas Unitarias',                                    cat:'Tests',               diff:'medium', folder:'13%20-%20PRUEBAS%20UNITARIAS' },
+  { num:'14', title:'Fechas',                                               cat:'IO',                  diff:'easy',   folder:'14%20-%20FECHAS' },
+  { num:'15', title:'Asincronía',                                           cat:'Asincronía',          diff:'hard',   folder:'15%20-%20ASINCRON%C3%8DA' },
+  { num:'16', title:'Expresiones Regulares',                                cat:'Strings',             diff:'hard',   folder:'16%20-%20EXPRESIONES%20REGULARES' },
+  { num:'17', title:'Iteraciones',                                          cat:'Colecciones',         diff:'easy',   folder:'17%20-%20ITERACIONES' },
+  { num:'18', title:'Conjuntos',                                            cat:'Estructuras de Datos',diff:'easy',   folder:'18%20-%20CONJUNTOS' },
+  { num:'19', title:'Enumeraciones',                                        cat:'POO',                 diff:'easy',   folder:'19%20-%20ENUMERACIONES' },
+  { num:'20', title:'Peticiones HTTP',                                      cat:'IO',                  diff:'medium', folder:'20%20-%20PETICIONES%20HTTP' },
+  { num:'21', title:'Callbacks',                                            cat:'Asincronía',          diff:'hard',   folder:'21%20-%20CALLBACKS' },
+  { num:'22', title:'Funciones de Orden Superior',                          cat:'Asincronía',          diff:'hard',   folder:'22%20-%20FUNCIONES%20DE%20ORDEN%20SUPERIOR' },
+  { num:'23', title:'Patrones de Diseño: Singleton',                        cat:'Patrones y SOLID',    diff:'medium', folder:'23%20-%20PATRONES%20DE%20DISE%C3%91O%3A%20SINGLETON' },
+  { num:'24', title:'Patrones de Diseño: Decoradores',                      cat:'Patrones y SOLID',    diff:'medium', folder:'24%20-%20PATRONES%20DE%20DISE%C3%91O%3A%20DECORADORES' },
+  { num:'25', title:'Logs',                                                 cat:'IO',                  diff:'easy',   folder:'25%20-%20LOGS' },
+  { num:'26', title:'SOLID: Principio de Responsabilidad Única (SRP)',      cat:'Patrones y SOLID',    diff:'hard',   folder:'26%20-%20SOLID%3A%20PRINCIPIO%20DE%20RESPONSABILIDAD%20%C3%9ANICA%20(SRP)' },
+  { num:'27', title:'SOLID: Principio Abierto-Cerrado (OCP)',               cat:'Patrones y SOLID',    diff:'hard',   folder:'27%20-%20SOLID%3A%20PRINCIPIO%20ABIERTO-CERRADO%20(OCP)' },
+  { num:'28', title:'SOLID: Principio de Sustitución de Liskov (LSP)',      cat:'Patrones y SOLID',    diff:'hard',   folder:'28%20-%20SOLID%3A%20PRINCIPIO%20DE%20SUSTITUCI%C3%93N%20DE%20LISKOV%20(LSP)' },
+  { num:'29', title:'SOLID: Principio de Segregación de Interfaces (ISP)', cat:'Patrones y SOLID',    diff:'hard',   folder:'29%20-%20SOLID%3A%20PRINCIPIO%20DE%20SEGREGACI%C3%93N%20DE%20INTERFACES%20(ISP)' },
+  { num:'30', title:'SOLID: Principio de Inversión de Dependencias (DIP)', cat:'Patrones y SOLID',    diff:'hard',   folder:'30%20-%20SOLID%3A%20PRINCIPIO%20DE%20INVERSI%C3%93N%20DE%20DEPENDENCIAS%20(DIP)' },
+  { num:'31', title:'Simulador Juegos Olímpicos',                           cat:'Proyectos',           diff:'hard',   folder:'31%20-%20SIMULADOR%20JUEGOS%20OL%C3%8DMPICOS' },
+  { num:'32', title:'Batalla Deadpool y Wolverine',                         cat:'Proyectos',           diff:'hard',   folder:'32%20-%20BATALLA%20DEADPOOL%20Y%20WOLVERINE' },
+  { num:'33', title:'Rescatando a Mickey',                                  cat:'Proyectos',           diff:'hard',   folder:'33%20-%20RESCATANDO%20A%20MICKEY' },
+  { num:'34', title:'Árbol Genealógico de la Casa del Dragón',             cat:'Proyectos',           diff:'hard',   folder:'34%20-%20%C3%81RBOL%20GENEAL%C3%93GICO%20DE%20LA%20CASA%20DEL%20DRAG%C3%93N' },
+  { num:'35', title:'Repartiendo los Anillos de Poder',                     cat:'Proyectos',           diff:'hard',   folder:'35%20-%20REPARTIENDO%20LOS%20ANILLOS%20DE%20PODER' },
+  { num:'36', title:'El Sombrero Seleccionador',                            cat:'Proyectos',           diff:'hard',   folder:'36%20-%20EL%20SOMBRERO%20SELECCIONADOR' },
+  { num:'37', title:'Oasis vs Linkin Park',                                 cat:'Proyectos',           diff:'hard',   folder:'37%20-%20OASIS%20VS%20LINKIN%20PARK' },
+  { num:'38', title:'MoureDev Pro',                                         cat:'Proyectos',           diff:'hard',   folder:'38%20-%20MOUREDEV%20PRO' },
+  { num:'39', title:'Batman Day',                                           cat:'Proyectos',           diff:'hard',   folder:'39%20-%20BATMAN%20DAY' },
+  { num:'40', title:'Fortnite Rubius Cup',                                  cat:'Proyectos',           diff:'hard',   folder:'40%20-%20FORTNITE%20RUBIUS%20CUP' },
+  { num:'41', title:'Camiseta RAR',                                         cat:'Proyectos',           diff:'hard',   folder:'41%20-%20CAMISETA%20RAR' },
+  { num:'42', title:'Torneo Dragon Ball',                                   cat:'Proyectos',           diff:'hard',   folder:'42%20-%20TORNEO%20DRAGON%20BALL' },
+  { num:'43', title:'Git GitHub CLI',                                       cat:'Proyectos',           diff:'medium', folder:'43%20-%20GIT%20GITHUB%20CLI' },
+  { num:'44', title:'Cuenta Atrás MoureDev Pro',                           cat:'Proyectos',           diff:'hard',   folder:'44%20-%20CUENTA%20ATR%C3%81S%20MOUREDEV%20PRO' },
+];
+
+const diffLabel  = { easy:'Fácil', medium:'Medio', hard:'Difícil' };
+const diffClass  = { easy:'diff-easy', medium:'diff-medium', hard:'diff-hard' };
+
+let doneSet = new Set(JSON.parse(localStorage.getItem('done') || '[]'));
+let currentFilter = 'all';
+
+function saveProgress() {
+  try { localStorage.setItem('done', JSON.stringify([...doneSet])); } catch(e){}
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('done-count').textContent    = doneSet.size;
+  document.getElementById('pending-count').textContent = exercises.length - doneSet.size;
+}
+
+function toggleDone(num) {
+  if (doneSet.has(num)) doneSet.delete(num);
+  else doneSet.add(num);
+  saveProgress();
+  const card = document.querySelector(`[data-num="${num}"]`);
+  if (card) {
+    card.classList.toggle('done', doneSet.has(num));
+    card.querySelector('.done-label').textContent = doneSet.has(num) ? '✓ Completado' : '○ Marcar como hecho';
+  }
+}
+
+function filterBy(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.exercise-card').forEach(card => {
+    const cardCat = card.dataset.cat;
+    card.classList.toggle('hidden', cat !== 'all' && cardCat !== cat);
+  });
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = exercises.map(ex => {
+    const isDone = doneSet.has(ex.num);
+    const ghUrl  = BASE_GH + ex.folder + '/ejercicio.md';
+    return `
+      <div class="exercise-card ${isDone ? 'done' : ''}" data-num="${ex.num}" data-cat="${ex.cat}">
+        <div class="card-header">
+          <span class="exercise-num">#${ex.num}</span>
+          <span class="difficulty ${diffClass[ex.diff]}">${diffLabel[ex.diff]}</span>
+        </div>
+        <div class="exercise-title">${ex.title}</div>
+        <span class="category-tag">${ex.cat}</span>
+        <div class="card-footer">
+          <span class="done-toggle" onclick="toggleDone('${ex.num}')">
+            <span class="done-label">${isDone ? '✓ Completado' : '○ Marcar como hecho'}</span>
+          </span>
+          <a class="gh-link" href="${ghUrl}" target="_blank">Ver enunciado →</a>
+        </div>
+      </div>`;
+  }).join('');
+  updateStats();
+}
+
+render();
+</script>
+</body>
+</html>
