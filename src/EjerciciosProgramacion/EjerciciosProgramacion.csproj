@@ -7,4 +7,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Fundamentos\" />
+    <Folder Include="EstructurasDatos\" />
+    <Folder Include="Colecciones\" />
+    <Folder Include="IO\" />
+    <Folder Include="Asincronia\" />
+    <Folder Include="PatronesSOLID\" />
+    <Folder Include="Test\" />
+    <Folder Include="POO\" />
+    <Folder Include="Recursividad\" />
+    <Folder Include="Strings\" />
+  </ItemGroup>
+
 </Project>
