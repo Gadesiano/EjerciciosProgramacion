@@ -1,10 +1,9 @@
 ﻿using EjerciciosProgramacion;
-using System.Runtime.Serialization.Formatters;
 
-var ejercicios = new List<IEjercicio>();
+var ejercicios = new List<IEjercicio>
 {
-
-}
+    new EjerciciosProgramacion.Fundamentos.Ejercicio00()
+};
 
 if (ejercicios.Count == 0)
 {
@@ -22,7 +21,7 @@ for (int i = 0; i < ejercicios.Count; i++)
 Console.Write("\nSelecciona un ejercicio: ");
 string? input = Console.ReadLine();
 
-if (!int .TryParse(input, out int seleccion) || seleccion < 1 || seleccion > ejercicios.Count)
+if (!int.TryParse(input, out int seleccion) || seleccion < 1 || seleccion > ejercicios.Count)
 {
     Console.WriteLine("Opción no válida.");
     return;

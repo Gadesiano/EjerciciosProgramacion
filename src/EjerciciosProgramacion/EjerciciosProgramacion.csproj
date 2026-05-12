@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Fundamentos\" />
     <Folder Include="EstructurasDatos\" />
     <Folder Include="Colecciones\" />
     <Folder Include="IO\" />
