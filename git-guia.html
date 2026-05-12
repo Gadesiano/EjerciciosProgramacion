@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guía Git — EjerciciosProgramacion</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222636;
+      --border: #2e3250;
+      --accent: #5b8cff;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --orange: #fb923c;
+      --teal: #2dd4bf;
+      --text: #e2e8f0;
+      --text-muted: #8892a4;
+      --code-bg: #0d1117;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2 .icon { font-size: 1rem; }
+
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Tabla de comandos */
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cmd-table thead tr {
+      background: var(--surface2);
+    }
+
+    .cmd-table th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cmd-table td {
+      padding: 0.75rem 1rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cmd-table tr:last-child td { border-bottom: none; }
+
+    .cmd-table tr:hover td { background: var(--surface2); }
+
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      color: var(--green);
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .cmd-table td:first-child { width: 42%; }
+
+    .desc { color: var(--text); }
+    .note { color: var(--text-muted); font-size: 0.85em; margin-top: 0.2rem; }
+
+    /* Conventional Commits */
+    .commits-grid {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .commit-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+    }
+
+    .commit-tag {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      white-space: nowrap;
+      min-width: 70px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .tag-feat    { background: #1a3a5c; color: #60a5fa; }
+    .tag-fix     { background: #3a1a1a; color: #f87171; }
+    .tag-chore   { background: #1a2a1a; color: #34d399; }
+    .tag-docs    { background: #2a2a1a; color: #fbbf24; }
+    .tag-test    { background: #2a1a3a; color: #a78bfa; }
+    .tag-refactor{ background: #1a2a2a; color: #2dd4bf; }
+    .tag-style   { background: #2a1a1a; color: #fb923c; }
+
+    .commit-info { flex: 1; }
+    .commit-info strong { color: var(--text); font-size: 0.95rem; }
+    .commit-info p { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.1rem; }
+
+    .commit-example {
+      margin-top: 1.2rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .commit-example span { color: var(--green); }
+    .commit-example em   { color: var(--accent); font-style: normal; }
+
+    /* Config section */
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .config-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+    }
+
+    .config-item label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Flujo de trabajo */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .flow-step {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 0.9rem;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .flow-step span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .flow-arrow {
+      color: var(--border);
+      font-size: 1.2rem;
+      padding: 0 0.4rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .config-grid { grid-template-columns: 1fr; }
+      .cmd-table td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Guía Git</h1>
+    <p>Referencia de comandos y convenciones del proyecto <strong>EjerciciosProgramacion</strong> · Actualizada progresivamente</p>
+  </header>
+
+  <!-- CONFIGURACIÓN INICIAL -->
+  <section>
+    <h2><span class="icon">⚙️</span> Configuración inicial</h2>
+    <div class="config-grid">
+      <div class="config-item">
+        <label>Comprobar nombre configurado</label>
+        <code>git config --global user.name</code>
+      </div>
+      <div class="config-item">
+        <label>Comprobar email configurado</label>
+        <code>git config --global user.email</code>
+      </div>
+      <div class="config-item">
+        <label>Establecer nombre</label>
+        <code>git config --global user.name "Nombre"</code>
+      </div>
+      <div class="config-item">
+        <label>Establecer email</label>
+        <code>git config --global user.email "email"</code>
+      </div>
+    </div>
+    <p style="margin-top:1rem; color:var(--text-muted); font-size:0.85rem;">
+      El flag <code>--global</code> aplica la configuración a todos los repositorios de la máquina. Sin él, la configuración sería solo para el repositorio actual.
+    </p>
+  </section>
+
+  <!-- COMANDOS -->
+  <section>
+    <h2><span class="icon">📋</span> Comandos utilizados</h2>
+    <table class="cmd-table">
+      <thead>
+        <tr>
+          <th>Comando</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git init</code></td>
+          <td>
+            <div class="desc">Inicializa un repositorio Git vacío en la carpeta actual.</div>
+            <div class="note">Crea la carpeta oculta <code>.git/</code> donde Git guarda todo el historial. No tocar manualmente.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git status</code></td>
+          <td>
+            <div class="desc">Muestra el estado actual del repositorio: ficheros sin trackear, en staging o modificados.</div>
+            <div class="note">El comando más usado en el día a día. Ejecutar constantemente para saber en qué punto estás.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git add .</code></td>
+          <td>
+            <div class="desc">Añade todos los ficheros no ignorados al área de staging (los prepara para el commit).</div>
+            <div class="note">El punto significa "todo". También se puede añadir un fichero concreto: <code>git add archivo.cs</code></div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git commit -m "mensaje"</code></td>
+          <td>
+            <div class="desc">Crea un commit con los ficheros en staging y el mensaje indicado.</div>
+            <div class="note">El mensaje debe seguir la convención de commits del proyecto (ver sección siguiente).</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git branch -m &lt;antiguo&gt; &lt;nuevo&gt;</code></td>
+          <td>
+            <div class="desc">Renombra una rama local.</div>
+            <div class="note">Usado para renombrar <code>master</code> a <code>main</code>, el nombre estándar actual en GitHub.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git remote add origin &lt;url&gt;</code></td>
+          <td>
+            <div class="desc">Enlaza el repositorio local con un repositorio remoto en GitHub.</div>
+            <div class="note"><code>origin</code> es el alias estándar para el remoto principal. Solo se ejecuta una vez por repositorio.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git remote -v</code></td>
+          <td>
+            <div class="desc">Muestra los remotos configurados y sus URLs.</div>
+            <div class="note">Aparecen dos líneas por remoto: una para <code>fetch</code> (descargar) y otra para <code>push</code> (subir). Normalmente son la misma URL.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git push -u origin main</code></td>
+          <td>
+            <div class="desc">Sube los commits locales a GitHub por primera vez y establece el upstream por defecto.</div>
+            <div class="note">El flag <code>-u</code> solo se usa la primera vez. A partir de ahí basta con <code>git push</code>.</div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>git push</code></td>
+          <td>
+            <div class="desc">Sube los commits locales al remoto configurado por defecto.</div>
+            <div class="note">Funciona tras haber ejecutado <code>git push -u origin main</code> al menos una vez.</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FLUJO BÁSICO -->
+  <section>
+    <h2><span class="icon">🔄</span> Flujo de trabajo básico</h2>
+    <div class="flow">
+      <div class="flow-step">Modificar ficheros<span>Working directory</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><code>git add</code><span>Staging area</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><code>git commit</code><span>Repositorio local</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><code>git push</code><span>GitHub (remoto)</span></div>
+    </div>
+    <p style="margin-top:1rem; color:var(--text-muted); font-size:0.85rem;">
+      Git tiene tres zonas locales: el <strong>working directory</strong> (tus ficheros), el <strong>staging area</strong> (lo que has marcado para commitear) y el <strong>repositorio local</strong> (el historial de commits). GitHub es el repositorio remoto.
+    </p>
+  </section>
+
+  <!-- CONVENTIONAL COMMITS -->
+  <section>
+    <h2><span class="icon">✍️</span> Convención de commits</h2>
+    <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:1.2rem;">
+      Se usa el estándar <strong>Conventional Commits</strong>. Hace el historial legible, profesional y filtrable.
+    </p>
+    <div class="commits-grid">
+      <div class="commit-row">
+        <span class="commit-tag tag-feat">feat</span>
+        <div class="commit-info">
+          <strong>Nueva funcionalidad</strong>
+          <p>Añadir un ejercicio nuevo, una feature o una capacidad al proyecto.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-fix">fix</span>
+        <div class="commit-info">
+          <strong>Corrección de bug</strong>
+          <p>Solucionar un error en un ejercicio o en la lógica del proyecto.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-chore">chore</span>
+        <div class="commit-info">
+          <strong>Mantenimiento / configuración</strong>
+          <p>Tareas que no afectan al código funcional: setup, .gitignore, configuración de proyecto.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-docs">docs</span>
+        <div class="commit-info">
+          <strong>Documentación</strong>
+          <p>Cambios en README, comentarios, guías o cualquier fichero de documentación.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-test">test</span>
+        <div class="commit-info">
+          <strong>Tests</strong>
+          <p>Añadir o modificar pruebas unitarias o de integración.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-refactor">refactor</span>
+        <div class="commit-info">
+          <strong>Refactorización</strong>
+          <p>Cambios en el código que no añaden funcionalidad ni corrigen errores: mejorar legibilidad, renombrar, reorganizar.</p>
+        </div>
+      </div>
+      <div class="commit-row">
+        <span class="commit-tag tag-style">style</span>
+        <div class="commit-info">
+          <strong>Estilo / formato</strong>
+          <p>Cambios de formato, espaciado, indentación. Sin impacto en la lógica.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="commit-example">
+      <span>git commit -m "</span><em>feat</em><span>: add fibonacci iterative exercise"</span><br>
+      <span>git commit -m "</span><em>chore</em><span>: initial project setup"</span><br>
+      <span>git commit -m "</span><em>fix</em><span>: correct off-by-one error in binary search"</span><br>
+      <span>git commit -m "</span><em>docs</em><span>: update git reference guide"</span>
+    </div>
+  </section>
+
+  <footer>
+    Proyecto <strong>EjerciciosProgramacion</strong> · Guía actualizada progresivamente a lo largo del proyecto
+  </footer>
+
+</div>
+</body>
+</html>
