@@ -31,7 +31,7 @@
             Console.WriteLine($"Suma: {a + b}");
             Console.WriteLine($"Resta: {a - b}");
             Console.WriteLine($"Multiplicación: {a * b}");
-            Console.WriteLine($"Divisón: {a / b}");
+            Console.WriteLine($"División: {a / b}");
             Console.WriteLine($"Módulo: {a % b}");
             a++;
             Console.WriteLine($"Incremento de a++: {a}");
@@ -107,6 +107,7 @@
                 7 => "Siete",
                 _ => a.ToString()
             };
+            Console.WriteLine(resultado);
 
             Console.WriteLine($"\nEstructuras de control iterativas => for con (i = 0) <= (a = {a})");
             for (int i = 0; i <= a; i++)
@@ -138,11 +139,11 @@
                 Console.WriteLine(i);
             }
 
-            Console.WriteLine($"Estructuras de control de excepciones => try-catch con a = {a}");
+            Console.WriteLine($"\nEstructuras de control de excepciones => try-catch con a = {a}");
             try
             {
                 
-                for (int i = 5; i <= a; i--)
+                for (int i = 5; i >= 0; i--)
                 {
                     var division = a / i;
                     Console.WriteLine(division);
