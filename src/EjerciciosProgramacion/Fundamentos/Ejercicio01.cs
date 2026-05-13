@@ -161,6 +161,18 @@
             {
                 Console.WriteLine($"Bucle finalizado");
             }
+
+            Console.WriteLine("\nDIFICULTAD AÑADIDA!");
+            for (int i = 10; i <= 55; i++)
+            {
+                var moduloDos = i % 2;
+                var igualDieciseis = 16;
+                var moduloTres = i % 3;
+                if (moduloDos == 0 && i != igualDieciseis && moduloTres != 0)
+                {
+                    Console.WriteLine(i);
+                }
+            }
         }
     }
 }

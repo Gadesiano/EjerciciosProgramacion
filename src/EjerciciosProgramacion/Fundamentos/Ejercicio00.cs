@@ -1,21 +1,20 @@
 ﻿namespace EjerciciosProgramacion.Fundamentos
 {
-    /// <summary>
-    /// #00 - Sintaxis, Variables, Tipos de Datos y Hola Mundo
-    /// Dificultad: Fácil
-    /// https://github.com/mouredev/roadmap-retos-programacion/blob/main/Roadmap/00%20-%20SINTAXIS%2C%20VARIABLES%2C%20TIPOS%20DE%20DATOS%20Y%20HOLA%20MUNDO/ejercicio.md
-    /// 
-    /// ENUNCIADO:
-    /// - Crea un comentario en el código y coloca la URL del sitio web oficial del lenguaje.
-    /// - Representa las diferentes sintaxis de comentarios (una línea, varias...).
-    /// - Crea una variable y una constante.
-    /// - Crea variables representando todos los tipos de datos primitivos del lenguaje.
-    /// - Imprime por terminal el texto: "¡Hola, [nombre del lenguaje]!"
-    /// </summary>
     public class Ejercicio00 : IEjercicio
     {
         public string Titulo => "#00 - Sintaxis, Variables, Tipos de Datos y Hola Mundo";
-
+        /*
+         *  #00 - Sintaxis, Variables, Tipos de Datos y Hola Mundo
+         *  Dificultad: Fácil
+         *  https://github.com/mouredev/roadmap-retos-programacion/blob/main/Roadmap/00%20-%20SINTAXIS%2C%20VARIABLES%2C%20TIPOS%20DE%20DATOS%20Y%20HOLA%20MUNDO/ejercicio.md
+         *  
+         *  ENUNCIADO:
+         *  - Crea un comentario en el código y coloca la URL del sitio web oficial del lenguaje.
+         *  - Representa las diferentes sintaxis de comentarios (una línea, varias...).
+         *  - Crea una variable y una constante.
+         *  - Crea variables representando todos los tipos de datos primitivos del lenguaje.
+         *  - Imprime por terminal el texto: "¡Hola, [nombre del lenguaje]!"
+         */
         public void Run()
         {
             //Comentario de una sola línea
