@@ -3,7 +3,8 @@
 var ejercicios = new List<IEjercicio>
 {
     new EjerciciosProgramacion.Fundamentos.Ejercicio00(),
-    new EjerciciosProgramacion.Fundamentos.Ejercicio01()
+    new EjerciciosProgramacion.Fundamentos.Ejercicio01(),
+    new EjerciciosProgramacion.Fundamentos.Ejercicio02()
 };
 
 if (ejercicios.Count == 0)
